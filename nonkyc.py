@@ -1,4 +1,4 @@
-"""The module for accessing XeggeX API written in asynchronous python"""
+"""The module for accessing NonKYC API written in asynchronous python"""
 
 import json
 import hashlib, hmac
@@ -90,11 +90,11 @@ class Auth():
 def private(func):
     """Decorator for declaring functions that require API keys.
 
-    A decorated function will throw an assertion error if API keys aren't placed in `xeggex_settings.json` file.
+    A decorated function will throw an assertion error if API keys aren't placed in `nonkyc_settings.json` file.
     """
     @wraps(func)
     async def wrap(*args, **kwargs):
-        assert args[0].auth is not None, "Auth not found. You can't use Account endpoints without specifying API keys. Specify \"access_key\" and \"secret_key\" in \"xeggex_settings.json\" file."
+        assert args[0].auth is not None, "Auth not found. You can't use Account endpoints without specifying API keys. Specify \"access_key\" and \"secret_key\" in \"nonkyc_settings.json\" file."
         return await func(*args, **kwargs)
     return wrap
 
@@ -127,17 +127,17 @@ class WSListenerContext():
         await self.ws.__aexit__(*exc)
         return False
 
-class XeggeXClient():
-    """The class that for accessing XeggeX exchange API."""
-    def __init__(self, settings_file = 'xeggex_settings.json'):
+class NonKYCClient():
+    """The class that for accessing NonKYC exchange API."""
+    def __init__(self, settings_file = 'nonkyc_settings.json'):
         try:
             with open(settings_file) as f:
                 settings = json.load(f)
             self.auth = Auth(settings['access_key'], settings['secret_key'])
         except (FileNotFoundError, KeyError) as ex:
             self.auth = None
-        self.endpoint = "https://api.xeggex.com/api/v2"
-        self.ws_endpoint = 'wss://api.xeggex.com'
+        self.endpoint = "https://api.nonkyc.io/api/v2"
+        self.ws_endpoint = 'wss://api.nonkyc.io'
         self.ws_responses = defaultdict(Queue)
         self.session = aiohttp.ClientSession()
         self.sending_event = asyncio.Event()
@@ -572,7 +572,7 @@ class XeggeXClient():
             ws: Websocket response object.
         """
         #async generators are weird to handle with decorators, manually checking for auth.
-        assert self.auth, "Auth not found. You can't use Account endpoints without specifying API keys. Specify \"access_key\" and \"secret_key\" in \"xeggex_settings.json\" file."
+        assert self.auth, "Auth not found. You can't use Account endpoints without specifying API keys. Specify \"access_key\" and \"secret_key\" in \"nonkyc_settings.json\" file."
         return self.ws_stream_generator(ws, "reports")
 
     @private
@@ -824,7 +824,7 @@ class XeggeXClient():
         """Get an order by id.
 
         Args:
-            order_id: XeggeX orderId or userProvidedId
+            order_id: NonKYC orderId or userProvidedId
         """
         path = f'/getorder/{order_id}'
         return await self.get(path)

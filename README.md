@@ -1,11 +1,11 @@
 # README  stub
-This is the python API client for XeggeX exchange API. [Reference link](https://htmlpreview.github.io/?https://github.com/KarolTrzeszczkowski/XeggeXPythonApiClient/blob/master/docs/xeggex.html)
+This is the python API client for NonKYC exchange API. [Reference link](https://htmlpreview.github.io/?https://github.com/KarolTrzeszczkowski/NonKYCPythonApiClient/blob/master/docs/nonkyc.html)
 
 <a name="settings"></a>
 ## Api Keys 
-To use account endpoints and login to the websocket enerate api keys and put them in `xeggex_settings.json` in the working directory. If you don't you'll still be able to use public methods.
+To use account endpoints and login to the websocket enerate api keys and put them in `nonkyc_settings.json` in the working directory. If you don't you'll still be able to use public methods.
 
-xeggex_settings.json format:
+nonkyc_settings.json format:
 ```
 {"access_key": "your_access_key_here", "secret_key": "your_secret_key_here"}
 ```
@@ -15,20 +15,20 @@ xeggex_settings.json format:
 
 ### Using public methods
 ```
->>> from xeggex import XeggeXClient
->>> x = XeggeXClient()
+>>> from nonkyc import NonKYCClient
+>>> x = NonKYCClient()
 >>> await x.get_assets()
 ```
-### Using private methods,  ([xeggegs_settings.json](#settings) required)
+### Using private methods,  ([nonkyc_settings.json](#settings) required)
 ```
->>> from xeggex import XeggeXClient
->>> x = XeggeXClient()
+>>> from nonkyc import NonKYCClient
+>>> x = NonKYCClient()
 >>> await x.get_balances()
 ```
 ### Websocket subscriptions
 ```
->>> from xeggex import XeggeXClient
->>> x = XeggeXClient()
+>>> from nonkyc import NonKYCClient
+>>> x = NonKYCClient()
 >>> async def main():
 ...     async with x.websocket_context() as ws:
 ...         async for msg in x.subscribe_trades_generator(ws,'XRG/USDT'):
@@ -37,10 +37,10 @@ xeggex_settings.json format:
 >>> await main()
 ```
 
-### Websocket private subscriptions,  ([xeggegs_settings.json](#settings) required):
+### Websocket private subscriptions,  ([nonkyc_settings.json](#settings) required):
 ```
->>> from xeggex import XeggeXClient
->>> x = XeggeXClient()
+>>> from nonkyc import NonKYCClient
+>>> x = NonKYCClient()
 >>> async def main():
 ...     async with x.websocket_context() as ws:
 ...         await x.ws_login(ws)
@@ -51,17 +51,17 @@ xeggex_settings.json format:
 ```
 ### Websocket public metods
 ```
->>> from xeggex import XeggeXClient
->>> x = XeggeXClient()
+>>> from nonkyc import NonKYCClient
+>>> x = NonKYCClient()
 >>> 
 ... async with x.websocket_context() as ws:
 ...     data = await x.ws_get_asset(ws, 'XRG')
 
 ```
-### Websocket private metods,  ([xeggegs_settings.json](#settings) required)
+### Websocket private metods,  ([nonkyc_settings.json](#settings) required)
 ```
->>> from xeggex import XeggeXClient
->>> x = XeggeXClient()
+>>> from nonkyc import NonKYCClient
+>>> x = NonKYCClient()
 >>> 
 ... async with x.websocket_context() as ws:
 ...     await x.ws_login(ws)
@@ -70,8 +70,8 @@ xeggex_settings.json format:
 ```
 ### Reading multiple streams at once
 ```
->>> from lib.clients.xeggex import XeggeXClient
->>> x = XeggeXClient()
+>>> from lib.clients.nonkyc import NonKYCClient
+>>> x = NonKYCClient()
 >>> async with x.websocket_context() as ws:
 ...     xrg_trades = [
 ...         x.subscribe_trades_generator(ws, 'DOGE/USDT'),
@@ -88,5 +88,5 @@ Run `immediate_or_cancel_example.py` according to the instruction in help. `pyth
 ## Contrinuting
 Generate documentation: 
 ```
-pdoc --html --output-dir docs --config show_source_code=False --force xeggex.py
+pdoc --html --output-dir docs --config show_source_code=False --force nonkyc.py
 ```

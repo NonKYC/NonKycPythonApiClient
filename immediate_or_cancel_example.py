@@ -1,10 +1,10 @@
-from xeggex import XeggeXClient
+from nonkyc import NonKYCClient
 import argparse
 from decimal import Decimal
 import asyncio, signal
 
 async def ioc(args):
-    x = XeggeXClient() if not args.config else XeggeXClient(args.config)
+    x = NonKYCClient() if not args.config else NonKYCClient(args.config)
     async with x.websocket_context() as ws:
         executed = Decimal(0)
         await x.ws_login(ws)
@@ -19,7 +19,7 @@ if __name__ == '__main__':
     args = argparse.ArgumentParser(description='Creates An order at a specific price and cancels it immediately. Returns the amount that was executed.')
     args.add_argument('-c', '--config', action = 'store', required=False, default=None,
                       help="path to a json file with your api keys. See"\
-                      "XeggeXPythonClient README.md")
+                      "NonKYCPythonClient README.md")
     args.add_argument('-t', '--total', action='store', required = True,
                       help="Total amount to be traded")
     args.add_argument('-m', '--market', action='store', required = True,
